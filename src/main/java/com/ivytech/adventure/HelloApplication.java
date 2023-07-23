@@ -71,7 +71,9 @@ public class HelloApplication extends Application {
         getSword.setOnAction(e -> {
             Item sword = new Item(10, 15, 0, 0);
             player.setInventory(sword);
-            pane.setBottom(new Label("You picked up a sword!"));
+            Label swordPickupMessage = new Label("You picked up a sword!");
+            swordPickupMessage.setStyle("-fx-text-fill: #FF8888; -fx-font-size: 16px;");
+            pane.setBottom(swordPickupMessage);
         });
         walkToHouse.setOnAction(e -> scene3(stage));
 
@@ -95,21 +97,27 @@ public class HelloApplication extends Application {
         Scene scene2 = new Scene(pane, WIDTH, HEIGHT);
         checkMailbox.setOnAction(e -> {
             Item potion = new Item(1, 0, 0, 50);
+            Label potionPickupMessage = new Label("You picked up a potion!");
             player.setInventory(potion);
-            pane.setBottom(new Label("You picked up a potion!"));
+            potionPickupMessage.setStyle("-fx-text-fill: #FF8888; -fx-font-size: 16px;");
+            pane.setBottom(potionPickupMessage);
         });
         breakIntoTheHouse.setOnAction(e -> scene4(stage));
 
         stage.setScene(scene2);
     }
     public static void scene4(Stage stage) {
-        GridPane pane = new GridPane();
+        BorderPane pane = new BorderPane();
         Button fight = new Button("Fight");
         Button run = new Button("Run");
-        pane.add(new Label("You break into the house and find an angry bear waiting for you.\n" +
-                "Will you fight the bear, or try to run away?\n"), 0, 0);
-        pane.add(fight, 0, 3);
-        pane.add(run, 0, 2);
+        Label bearLabel = new Label("You break into the house and find an angry bear waiting for you.\n" +
+                "Will you fight the bear, or try to run away?\n");
+        bearLabel.setFont(font);
+        bearLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 16px;");
+        bearLabel.setTextAlignment(TextAlignment.CENTER);
+        pane.setCenter(bearLabel);
+        pane.setLeft(fight);
+        pane.setRight(run);
         pane.setPadding(new Insets(10));
         pane.setBackground(bg);
         Scene scene2 = new Scene(pane, WIDTH, HEIGHT);
@@ -137,7 +145,11 @@ public class HelloApplication extends Application {
 
     public static void run(Stage stage) {
         Pane pane = new StackPane();
-        pane.getChildren().add(new Label("You have died :("));
+        Label deathLabel = new Label("You have died :(");
+        deathLabel.setFont(font);
+        deathLabel.setStyle("-fx-text-fill: #FF8888; -fx-font-size: 16px;");
+        deathLabel.setTextAlignment(TextAlignment.CENTER);
+        pane.getChildren().add(deathLabel);
         pane.setPadding(new Insets(10));
         pane.setBackground(bg);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);

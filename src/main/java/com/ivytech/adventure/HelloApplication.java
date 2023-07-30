@@ -29,6 +29,7 @@ public class HelloApplication extends Application {
     public static final BackgroundFill bgFill = new BackgroundFill(bgColor, new CornerRadii(10), new Insets(10));
     public static final Background bg = new Background(bgFill);
     public static final Font font = Font.font("Courier", FontWeight.BOLD, 15);
+    public static boolean canWin = false;
 
     @Override
     public void start(Stage stage) throws IOException {
@@ -59,9 +60,6 @@ public class HelloApplication extends Application {
         introLabel.setTextAlignment(TextAlignment.CENTER);
         introLabel.setFont(font);
         pane.setCenter(introLabel);
-//        greenField.setFitHeight(200);
-//        greenField.setFitWidth(200);
-//        pane.add(greenField, 0, 1, 1, 2);
         GridPane.setColumnSpan(pane, 2);
         pane.setRight(getSword);
         pane.setLeft(walkToHouse);
@@ -74,6 +72,7 @@ public class HelloApplication extends Application {
             Label swordPickupMessage = new Label("You picked up a sword!");
             swordPickupMessage.setStyle("-fx-text-fill: #FF8888; -fx-font-size: 16px;");
             pane.setBottom(swordPickupMessage);
+            canWin = true;
         });
         walkToHouse.setOnAction(e -> scene3(stage));
 
@@ -121,26 +120,39 @@ public class HelloApplication extends Application {
         pane.setPadding(new Insets(10));
         pane.setBackground(bg);
         Scene scene2 = new Scene(pane, WIDTH, HEIGHT);
-        fight.setOnAction(e -> run(stage));
+        Animal bear = new Animal("brown", 4, 200);
+        fight.setOnAction(e -> fight(stage, bear));
         run.setOnAction(e -> run(stage));
 
         stage.setScene(scene2);
     }
-    public static void fight(Stage stage) {
-        GridPane pane = new GridPane();
+    public static void fight(Stage stage, Animal enemy) {
+        BorderPane pane = new BorderPane();
         Button attack = new Button("Attack");
         Button defend = new Button("Defend");
-        pane.add(new Label("You break into the house and find an angry bear waiting for you.\n" +
-                "Will you fight the bear, or try to run away?\n"), 0, 0);
-        pane.add(attack, 0, 3);
-        pane.add(defend, 0, 2);
+        Label fightLabel = new Label("The enemy's health is " + enemy.getHealth() +
+                "\n Your health is " + player.getHealth());
+        fightLabel.setFont(font);
+        fightLabel.setStyle("-fx-text-fill: #888888; -fx-font-size: 16px;");
+        fightLabel.setTextAlignment(TextAlignment.CENTER);
+        pane.setCenter(fightLabel);
+        pane.setLeft(attack);
+        pane.setRight(defend);
         pane.setPadding(new Insets(10));
         pane.setBackground(bg);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
-        attack.setOnAction(e -> fight(stage));
+        attack.setOnAction(e -> {
+                    if (canWin)
+                        win(stage);
+                    else
+                        run(stage);
+                });
         defend.setOnAction(e -> run(stage));
-
         stage.setScene(scene);
+        if (player.getHealth() <= 0)
+            run(stage);
+        else if (enemy.getHealth() <= 0)
+            win(stage);
     }
 
     public static void run(Stage stage) {
@@ -150,6 +162,18 @@ public class HelloApplication extends Application {
         deathLabel.setStyle("-fx-text-fill: #FF8888; -fx-font-size: 16px;");
         deathLabel.setTextAlignment(TextAlignment.CENTER);
         pane.getChildren().add(deathLabel);
+        pane.setPadding(new Insets(10));
+        pane.setBackground(bg);
+        Scene scene = new Scene(pane, WIDTH, HEIGHT);
+        stage.setScene(scene);
+    }
+    public static void win(Stage stage) {
+        Pane pane = new StackPane();
+        Label winLabel = new Label("You win!");
+        winLabel.setFont(font);
+        winLabel.setStyle("-fx-text-fill: #FF8888; -fx-font-size: 16px;");
+        winLabel.setTextAlignment(TextAlignment.CENTER);
+        pane.getChildren().add(winLabel);
         pane.setPadding(new Insets(10));
         pane.setBackground(bg);
         Scene scene = new Scene(pane, WIDTH, HEIGHT);

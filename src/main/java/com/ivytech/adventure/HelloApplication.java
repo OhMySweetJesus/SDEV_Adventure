@@ -31,6 +31,7 @@ public class HelloApplication extends Application {
     public static final Font font = Font.font("Courier", FontWeight.BOLD, 15);
     public static boolean canWin = false;
 
+    // Initial Screen
     @Override
     public void start(Stage stage) throws IOException {
         Scanner scanner = new Scanner(System.in);
@@ -49,6 +50,8 @@ public class HelloApplication extends Application {
         stage.setScene(scene);
         stage.show();
     }
+
+    // Start your adventure
     public static void scene2(Stage stage) {
         BorderPane pane = new BorderPane();
         Button getSword = new Button("Pick up sword");
@@ -155,6 +158,7 @@ public class HelloApplication extends Application {
             win(stage);
     }
 
+    // Running is never an option
     public static void run(Stage stage) {
         Pane pane = new StackPane();
         Label deathLabel = new Label("You have died :(");
@@ -167,6 +171,7 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         stage.setScene(scene);
     }
+    // Display lovely win message for those smart enough to pick up the sword
     public static void win(Stage stage) {
         Pane pane = new StackPane();
         Label winLabel = new Label("You win!");
@@ -179,6 +184,8 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(pane, WIDTH, HEIGHT);
         stage.setScene(scene);
     }
+
+    // Main function here for non-IDE support
     public static void main(String[] args) {
         launch();
     }
